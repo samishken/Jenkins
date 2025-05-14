@@ -1,6 +1,10 @@
 # Jenkins
 * Orchestrates entire software delivery pipeline from building and testing to deployment.  <br>
 
+
+
+
+
 * $JENKINS_HOME
     - tree `/var/lib/jenkins`
     - Jenkins Home directory is a crucial part of Jenkins setup, it stores all jenkins data and configuration.

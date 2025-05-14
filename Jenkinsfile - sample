@@ -1,0 +1,79 @@
+pipeline {
+    parameters {  // define parameters for the pipeline
+        string(name: 'BRANCH', defaultValue: 'main', description: 'Branch to build')
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run unit tests?')
+    }
+    environment {  # set environment variables
+        VAR1 = 'some_value'
+        VAR2
+    }
+    agents any  # runs on any available agent at the root level
+    stages {
+        stage('Build') {
+            agent { docker 'ubuntu:alpint'}  // this stage runs on a Docker container with Ubuntu Alpine
+            steps {
+                script {
+                    echo 'Building...'
+                    // Add your build commands here
+                }
+            }
+        }
+        stage('Unit Test') {
+            steps {
+                script {
+                    echo 'Testing...'
+                    // Add your test commands here
+                }
+            }
+        }
+
+        stage('Process Files') {  
+            steps {
+                script {  # script block to run Groovy code
+                    files = ['file1.txt', 'file2.txt']
+                        files.each { file ->
+                            sh "echo Processing $file" 
+                }
+            }
+        }
+
+        stage('Deployment') {
+            when {
+                expression { branch == 'main'}
+            }
+            steps {
+                script {
+                    echo 'Deploying...'
+                    // Add your deployment commands here
+                }
+            }
+            steps {
+                withCredentials([string(credentialsId: 'my-credentials', variable: 'MY_CREDENTIALS')]) {
+                    script {
+                        echo "Using credentials: ${MY_CREDENTIALS}"
+                        // Add commands that require credentials here
+                    }
+                }
+            }
+        }
+        
+        post {   // post actions sending notifications
+            success {
+                script {
+                    echo 'Build succeeded!'
+                }
+            }
+            failure {
+                script {
+                    echo 'Build failed!'
+                }
+            }
+            always {
+                script {
+                    echo 'Cleaning up...'
+                    // Add your cleanup commands here
+                }
+            }
+        }
+    }
+}
