@@ -24,7 +24,6 @@ pipeline {
                     // Run unit tests
                     for (int i = 0; i < 60; i++) {
                         echo "Running unit test iteration ${i + 1}"
-                        sleep 1
                     }
                     // Use the Maven wrapper to run the tests
                 }
