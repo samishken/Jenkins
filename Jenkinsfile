@@ -11,7 +11,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'mvn clean package -DskipTests=true'
-        archiveArtifacts 'target/ my-java-app-*.jar'
+        archiveArtifacts 'target/my-java-app-*.jar'
       }
     }
 
