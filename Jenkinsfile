@@ -12,6 +12,7 @@ pipeline {
             steps {
                 sh 'echo Print Maven Version'
                 sh 'mvn -version'
+                sh "echo Sleep-Time - ${params.SLEEP_TIME}, Branch - ${params.BRANCH_NAME}"
             }
         }
         stage('Build') {
@@ -33,7 +34,7 @@ pipeline {
         }
         stage('Integration Test') {
             steps {
-                sh 'sleep 5s'
+                sh "sleep ${params.SLEEP_TIME}"
             }
         }
     }
