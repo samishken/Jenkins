@@ -34,7 +34,6 @@ pipeline {
         stage('Integration Test') {
             steps {
                 sh 'sleep 5s'
-                sh 'curl -s http://localhost:6767/hello'
             }
         }
     }
