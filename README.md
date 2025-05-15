@@ -11,6 +11,9 @@
     - Including jenkin jobs, plugins, configurations, logs, artifacts, archives and other metadata related to the jenkins server.
     - Need to be regularly backedup
 
+
+
+
 ---
 ### Jobs
 - Define specific tasks such as compiling code, running tests, or deploying to an environment

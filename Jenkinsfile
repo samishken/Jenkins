@@ -1,3 +1,4 @@
+/***** BRANCH - TEST *****/
 pipeline {
     agent any
 
@@ -7,7 +8,7 @@ pipeline {
     }
     
     stages {
-        stage('Echo Version') {
+        stage('Maven Version') {
             steps {
                 sh 'echo Print Maven Version'
                 sh 'mvn -version'
@@ -16,18 +17,24 @@ pipeline {
         stage('Build') {
             steps {
                 sh "mvn clean package -DskipTests=true"
+                archiveArtifacts 'target/my-java-app-*.jar'
             }
         }
         stage('Unit Test') {
             steps {
-                script {
-                    // Run unit tests
-                    for (int i = 0; i < 60; i++) {
-                        echo "Running unit test iteration ${i + 1}"
-                    }
-                    // Use the Maven wrapper to run the tests
-                }
                 sh "mvn test"
+                junit(testResults:'target/surefire-reports/TEST-*.xml', keepProperties: true, keepTestNames: true)
+            }
+        }
+        stage('Local Deployment') {
+            steps {
+                sh """ java -jar target/my-java-app-*.jar > /dev/null & """
+            }
+        }
+        stage('Integration Test') {
+            steps {
+                sh 'sleep 5s'
+                sh 'curl -s http://localhost:6767/hello'
             }
         }
     }
